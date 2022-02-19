@@ -35,14 +35,14 @@ class Player(pygame.sprite.Sprite):
             self.shoot()
         self.rect.x += self.speedX
         self.rect.y += self.speedY
-        if self.rect.right > WIDTH:
-            self.rect.right = WIDTH
-        if self.rect.left < 0:
-            self.rect.left = 0
-        if self.rect.bottom > HEIGHT:
-            self.rect.bottom = HEIGHT
-        if self.rect.top < 0:
-            self.rect.top = 0
+        if self.rect.right > FRAME_RIGHT:
+            self.rect.right = FRAME_RIGHT
+        if self.rect.left < FRAME_LEFT:
+            self.rect.left = FRAME_LEFT
+        if self.rect.bottom > FRAME_BOTTOM:
+            self.rect.bottom = FRAME_BOTTOM
+        if self.rect.top < FRAME_TOP:
+            self.rect.top = FRAME_TOP
 
     def shoot(self):
         if self.reloaded:

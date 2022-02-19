@@ -4,12 +4,14 @@ from constants.window import *
 from objects.Enemy import Enemy
 from objects.Player import Player
 from objects.glob import groups, events
+import constants.playscreen
 
 pygame.init()
 pygame.mixer.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT), vsync=0)
 pygame.display.set_caption("Haizen Project")
 clock = pygame.time.Clock()
+constants.playscreen.init()
 player = Player()
 enemy = Enemy(10)
 groups["all_sprites"].add(player)
