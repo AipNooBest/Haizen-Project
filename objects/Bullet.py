@@ -1,14 +1,24 @@
 import pygame
 
 from constants.window import *
+from objects.glob import groups
 
 
 class Bullet(pygame.sprite.Sprite):
-    def __init__(self, startX, startY, speedX, speedY):
+    def __init__(self, type, startX, startY, speedX, speedY):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((6, 10))
-        self.image.fill(RED)
-        self.rect = self.image.get_rect()
+        if type == "pin":
+            self.image = pygame.Surface((6, 10))
+            self.image.fill(WHITE)
+            self.rect = self.image.get_rect()
+        if type == "pellet":
+            radius = 4
+            self.image = pygame.Surface((radius * 2, radius * 2), pygame.SRCALPHA)
+            pygame.draw.circle(self.image, WHITE, (radius, radius), radius)
+            self.rect = pygame.Rect(startX, startY, radius * 2, radius * 2)
+
+        groups["bullets"].add(self)
+        groups["all_sprites"].add(self)
         self.rect.x = startX
         self.rect.y = startY
         self.speedx = speedX

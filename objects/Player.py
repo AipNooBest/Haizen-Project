@@ -48,6 +48,4 @@ class Player(pygame.sprite.Sprite):
         if self.reloaded:
             self.reloaded = False
             pygame.time.set_timer(events["reloaded_event"], self.reload_speed)
-            bullet = Bullet(self.rect.centerx, self.rect.y - 15, 0, -20)
-            groups["bullets"].add(bullet)
-            groups["all_sprites"].add(bullet)
+            bullet = Bullet("pellet", self.rect.centerx, self.rect.y - 15, 0, -20)
