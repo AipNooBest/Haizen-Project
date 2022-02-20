@@ -13,12 +13,17 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.centerx = FRAME_LEFT + FRAME_RIGHT / 2
         self.rect.centery = FRAME_BOTTOM - 40
+        self.HP = 1
         self.speedX = 0
         self.speedY = 0
         self.reloaded = True
         self.reload_speed = 60
 
     def update(self) -> None:
+        if pygame.sprite.spritecollide(self, groups["enemy_bullets"], True):
+            self.HP -= 1
+        if self.HP <= 0:
+            self.kill()
         self.speedX = 0
         self.speedY = 0
         keystate = pygame.key.get_pressed()
