@@ -23,13 +23,16 @@ class Player(pygame.sprite.Sprite):
         self.speedY = 0
         keystate = pygame.key.get_pressed()
         if keystate[pygame.K_LEFT]:
-            self.speedX = -5
+            self.speedX = -6
         if keystate[pygame.K_RIGHT]:
-            self.speedX = 5
+            self.speedX = 6
         if keystate[pygame.K_UP]:
-            self.speedY = -5
+            self.speedY = -6
         if keystate[pygame.K_DOWN]:
-            self.speedY = 5
+            self.speedY = 6
+        if keystate[pygame.K_LSHIFT]:
+            self.speedX /= 2
+            self.speedY /= 2
 
         if keystate[pygame.K_z]:
             self.shoot()
