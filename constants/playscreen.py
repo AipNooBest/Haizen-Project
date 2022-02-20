@@ -10,8 +10,7 @@ class PlayField(pygame.sprite.Sprite):
         self.image = pygame.Surface((width, height))
         self.image.fill('darkgreen')
         self.rect = self.image.get_rect()
-        self.mask = pygame.mask.from_surface(self.image)
-        self.mask.invert()
+        self._layer = 0
         self.rect.x = x
         self.rect.y = y
         self.add(groups["all_sprites"])

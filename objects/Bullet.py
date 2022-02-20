@@ -19,6 +19,7 @@ class Bullet(pygame.sprite.Sprite):
 
         groups["bullets"].add(self)
         groups["all_sprites"].add(self)
+        self._layer = 1
         self.rect.x = startX
         self.rect.y = startY
         self.speedx = speedX

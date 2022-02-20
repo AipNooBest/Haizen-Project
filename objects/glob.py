@@ -1,9 +1,10 @@
 import pygame
 
 groups = {
-    "all_sprites": pygame.sprite.Group(),
-    "mobs": pygame.sprite.Group(),
-    "bullets": pygame.sprite.Group(),
+    "all_sprites": pygame.sprite.LayeredUpdates(),
+    "mobs": pygame.sprite.LayeredUpdates(),
+    "player_bullets": pygame.sprite.LayeredUpdates(),
+    "enemy_bullets": pygame.sprite.LayeredUpdates(),
     "border": pygame.sprite.Group(),
 }
 

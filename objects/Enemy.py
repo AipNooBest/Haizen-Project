@@ -11,6 +11,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.centerx = WIDTH / 2
         self.rect.centery = 80
+        self._layer = 3
         self.HP = hp
 
     def update(self):
