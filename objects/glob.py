@@ -10,5 +10,6 @@ groups = {
 
 events = {
     "reloaded_event": pygame.USEREVENT,
-    "enemy_attack_event": pygame.USEREVENT + 1
+    "enemy_attack_event": pygame.USEREVENT + 1,
+    "enemy_reloaded_event": pygame.USEREVENT + 2
 }

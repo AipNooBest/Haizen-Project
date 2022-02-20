@@ -1,9 +1,8 @@
 import pygame
+import objects.SpellCard
 
-from math import sin, cos, pi
 from constants.window import *
-from objects.Bullet import Bullet
-from objects.glob import groups, events
+from objects.glob import groups
 
 
 class Enemy(pygame.sprite.Sprite):
@@ -23,23 +22,8 @@ class Enemy(pygame.sprite.Sprite):
         for _ in hits:
             self.HP -= 1
         if self.HP <= 0:
+            objects.SpellCard.stop()
             self.kill()
 
     def attack(self):
-        if self.HP <= 0:
-            return
-        speed = 10
-        groups["enemy_bullets"].add(
-            Bullet("pellet", self.rect.centerx, self.rect.centery, speed * cos(self.angle * pi / 180),
-                   speed * sin(self.angle * pi / 180)))
-        groups["enemy_bullets"].add(
-            Bullet("pellet", self.rect.centerx, self.rect.centery, speed * cos((self.angle + 90) * pi / 180),
-                   speed * sin((self.angle + 90) * pi / 180)))
-        groups["enemy_bullets"].add(
-            Bullet("pellet", self.rect.centerx, self.rect.centery, speed * cos((self.angle + 180) * pi / 180),
-                   speed * sin((self.angle + 180) * pi / 180)))
-        groups["enemy_bullets"].add(
-            Bullet("pellet", self.rect.centerx, self.rect.centery, speed * cos((self.angle + 270) * pi / 180),
-                   speed * sin((self.angle + 270) * pi / 180)))
-        self.angle += 23
-        pygame.time.set_timer(events["enemy_attack_event"], 50)
+        objects.SpellCard.start(self, 1)

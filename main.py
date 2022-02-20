@@ -1,5 +1,6 @@
 import pygame
 
+import objects.SpellCard
 from constants.window import *
 from objects.Enemy import Enemy
 from objects.Player import Player
@@ -8,7 +9,7 @@ import constants.playscreen
 
 pygame.init()
 pygame.mixer.init()
-screen = pygame.display.set_mode((WIDTH, HEIGHT), vsync=0)
+screen = pygame.display.set_mode((WIDTH, HEIGHT), vsync=1)
 pygame.display.set_caption("Haizen Project")
 clock = pygame.time.Clock()
 constants.playscreen.init()
@@ -31,6 +32,8 @@ while running:
             pygame.time.set_timer(events["reloaded_event"], 0)
         if event.type == pygame.USEREVENT + 1:
             enemy.attack()
+        if event.type == pygame.USEREVENT + 2:
+            objects.SpellCard.loop()
 
     groups["all_sprites"].update()
 
