@@ -15,9 +15,8 @@ class Enemy(pygame.sprite.Sprite):
         self.HP = hp
 
     def update(self):
-        hit = pygame.sprite.spritecollideany(self, groups["bullets"])
-        if hit:
-            hit.kill()
+        hits = pygame.sprite.spritecollide(self, groups["player_bullets"], True)
+        for _ in hits:
             self.HP -= 1
         if self.HP <= 0:
             self.kill()
