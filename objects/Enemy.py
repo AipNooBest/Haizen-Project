@@ -3,7 +3,7 @@ import pygame
 from math import sin, cos, pi
 from constants.window import *
 from objects.Bullet import Bullet
-from objects.glob import groups
+from objects.glob import groups, events
 
 
 class Enemy(pygame.sprite.Sprite):
@@ -14,6 +14,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.centerx = FRAME_LEFT + FRAME_RIGHT / 2
         self.rect.centery = 80
+        self.angle = 0
         self._layer = 3
         self.HP = hp
 
@@ -25,17 +26,20 @@ class Enemy(pygame.sprite.Sprite):
             self.kill()
 
     def attack(self):
+        if self.HP <= 0:
+            return
         speed = 10
-        angle = 0
         groups["enemy_bullets"].add(
-            Bullet("pellet", self.rect.centerx, self.rect.y, speed * cos(angle * pi / 180),
-                   speed * sin(angle * pi / 180)))
+            Bullet("pellet", self.rect.centerx, self.rect.centery, speed * cos(self.angle * pi / 180),
+                   speed * sin(self.angle * pi / 180)))
         groups["enemy_bullets"].add(
-            Bullet("pellet", self.rect.centerx, self.rect.y, speed * cos((angle + 90) * pi / 180),
-                   speed * sin((angle + 90) * pi / 180)))
+            Bullet("pellet", self.rect.centerx, self.rect.centery, speed * cos((self.angle + 90) * pi / 180),
+                   speed * sin((self.angle + 90) * pi / 180)))
         groups["enemy_bullets"].add(
-            Bullet("pellet", self.rect.centerx, self.rect.y, speed * cos((angle + 180) * pi / 180),
-                   speed * sin((angle + 180) * pi / 180)))
+            Bullet("pellet", self.rect.centerx, self.rect.centery, speed * cos((self.angle + 180) * pi / 180),
+                   speed * sin((self.angle + 180) * pi / 180)))
         groups["enemy_bullets"].add(
-            Bullet("pellet", self.rect.centerx, self.rect.y, speed * cos((angle + 270) * pi / 180),
-                   speed * sin((angle + 270) * pi / 180)))
+            Bullet("pellet", self.rect.centerx, self.rect.centery, speed * cos((self.angle + 270) * pi / 180),
+                   speed * sin((self.angle + 270) * pi / 180)))
+        self.angle += 23
+        pygame.time.set_timer(events["enemy_attack_event"], 50)

@@ -1,6 +1,6 @@
 import pygame
 
-from objects.glob import groups
+from objects.glob import groups, events
 from constants.window import *
 
 
@@ -19,3 +19,4 @@ class PlayField(pygame.sprite.Sprite):
 
 def init():
     PlayField(FRAME_LEFT, FRAME_TOP, FRAME_RIGHT-FRAME_LEFT, FRAME_BOTTOM-FRAME_TOP)
+    pygame.time.set_timer(events["enemy_attack_event"], 3000)
