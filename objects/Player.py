@@ -8,11 +8,11 @@ from objects.glob import groups, events
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((20, 30))
+        self.image = pygame.Surface((23, 30))
         self.image.fill(GREEN)
         self.rect = self.image.get_rect()
-        self.rect.centerx = WIDTH / 2
-        self.rect.centery = HEIGHT - 60
+        self.rect.centerx = FRAME_LEFT + FRAME_RIGHT / 2
+        self.rect.centery = FRAME_BOTTOM - 40
         self.speedX = 0
         self.speedY = 0
         self.reloaded = True
