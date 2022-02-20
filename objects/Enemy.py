@@ -12,7 +12,7 @@ class Enemy(pygame.sprite.Sprite):
         self.image.fill(RED)
         self.rect = self.image.get_rect()
         self.rect.centerx = FRAME_LEFT + FRAME_RIGHT / 2
-        self.rect.centery = 80
+        self.rect.centery = 160
         self.angle = 0
         self._layer = 3
         self.HP = hp
