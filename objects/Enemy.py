@@ -1,5 +1,8 @@
 import pygame
+
+from math import sin, cos, pi
 from constants.window import *
+from objects.Bullet import Bullet
 from objects.glob import groups
 
 
@@ -20,3 +23,19 @@ class Enemy(pygame.sprite.Sprite):
             self.HP -= 1
         if self.HP <= 0:
             self.kill()
+
+    def attack(self):
+        speed = 10
+        angle = 0
+        groups["enemy_bullets"].add(
+            Bullet("pellet", self.rect.centerx, self.rect.y, speed * cos(angle * pi / 180),
+                   speed * sin(angle * pi / 180)))
+        groups["enemy_bullets"].add(
+            Bullet("pellet", self.rect.centerx, self.rect.y, speed * cos((angle + 90) * pi / 180),
+                   speed * sin((angle + 90) * pi / 180)))
+        groups["enemy_bullets"].add(
+            Bullet("pellet", self.rect.centerx, self.rect.y, speed * cos((angle + 180) * pi / 180),
+                   speed * sin((angle + 180) * pi / 180)))
+        groups["enemy_bullets"].add(
+            Bullet("pellet", self.rect.centerx, self.rect.y, speed * cos((angle + 270) * pi / 180),
+                   speed * sin((angle + 270) * pi / 180)))

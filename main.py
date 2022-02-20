@@ -13,7 +13,7 @@ pygame.display.set_caption("Haizen Project")
 clock = pygame.time.Clock()
 constants.playscreen.init()
 player = Player()
-enemy = Enemy(10)
+enemy = Enemy(20)
 groups["all_sprites"].add(player)
 groups["all_sprites"].add(enemy)
 groups["mobs"].add(enemy)
@@ -29,6 +29,8 @@ while running:
         if event.type == pygame.USEREVENT:
             player.reloaded = True
             pygame.time.set_timer(events["reloaded_event"], 0)
+        if event.type == pygame.USEREVENT + 1:
+            enemy.attack()
 
     groups["all_sprites"].update()
 
