@@ -16,6 +16,8 @@ class Enemy(pygame.sprite.Sprite):
         self.angle = 0
         self._layer = 3
         self.HP = hp
+        self.add(groups["all_sprites"])
+        self.add(groups["mobs"])
 
     def update(self):
         hits = pygame.sprite.spritecollide(self, groups["player_bullets"], True)

@@ -1,23 +1,22 @@
 import pygame
-
 import objects.SpellCard
+import constants.playscreen
+import constants.startscreen
+
 from constants.window import *
 from objects.Enemy import Enemy
 from objects.Player import Player
-from objects.glob import groups, events
-import constants.playscreen
+from objects.glob import groups, events, screen
 
+# Инициализация
 pygame.init()
 pygame.mixer.init()
-screen = pygame.display.set_mode((WIDTH, HEIGHT), vsync=1)
 pygame.display.set_caption("Haizen Project")
 clock = pygame.time.Clock()
-constants.playscreen.init()
+state = 0
+constants.startscreen.init()
 player = Player()
-enemy = Enemy(40)
-groups["all_sprites"].add(player)
-groups["all_sprites"].add(enemy)
-groups["mobs"].add(enemy)
+enemy = Enemy(80)
 
 
 # Game loop
@@ -27,6 +26,10 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if state == 0:
+            constants.startscreen.handle(event)
+        elif state == 1:
+            constants.playscreen.handle(event)
         if event.type == pygame.USEREVENT:
             player.reloaded = True
             pygame.time.set_timer(events["reloaded_event"], 0)
@@ -36,8 +39,6 @@ while running:
             objects.SpellCard.loop()
 
     groups["all_sprites"].update()
-
-    screen.fill(BLACK)
     groups["all_sprites"].draw(screen)
     pygame.display.flip()
 

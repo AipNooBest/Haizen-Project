@@ -18,6 +18,7 @@ class Player(pygame.sprite.Sprite):
         self.speedY = 0
         self.reloaded = True
         self.reload_speed = 60
+        self.add(groups["all_sprites"])
 
     def update(self) -> None:
         if pygame.sprite.spritecollide(self, groups["enemy_bullets"], True):
