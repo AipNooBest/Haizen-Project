@@ -1,4 +1,5 @@
 import pygame
+import constants.playscreen
 
 from constants.window import *
 from objects.Bullet import Bullet
@@ -22,6 +23,7 @@ class Player(pygame.sprite.Sprite):
 
     def update(self) -> None:
         if pygame.sprite.spritecollide(self, groups["enemy_bullets"], True):
+            constants.playscreen.update_sprites("PLAYER_HP", "reduce")
             self.HP -= 1
         if self.HP <= 0:
             self.kill()

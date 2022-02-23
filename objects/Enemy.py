@@ -1,5 +1,6 @@
 import pygame
 import objects.SpellCard
+import constants.playscreen
 
 from constants.window import *
 from objects.glob import groups
@@ -16,6 +17,7 @@ class Enemy(pygame.sprite.Sprite):
         self.angle = 0
         self._layer = 3
         self.HP = hp
+        self.max_HP = hp
         self.add(groups["all_sprites"])
         self.add(groups["mobs"])
 
@@ -23,6 +25,8 @@ class Enemy(pygame.sprite.Sprite):
         hits = pygame.sprite.spritecollide(self, groups["player_bullets"], True)
         for _ in hits:
             self.HP -= 1
+            constants.playscreen.update_sprites("ENEMY_HP", "set", self.HP)
+
         if self.HP <= 0:
             objects.SpellCard.stop()
             self.kill()
