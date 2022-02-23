@@ -1,17 +1,16 @@
 import pygame
 import constants.playscreen
 import constants.startscreen
+import objects.glob
 
 from constants.window import *
-from objects.glob import groups, screen
 
 # Инициализация
 pygame.init()
 pygame.mixer.init()
 pygame.display.set_caption("Haizen Project")
 clock = pygame.time.Clock()
-state = 1
-constants.playscreen.init()
+constants.startscreen.init()
 
 
 # Game loop
@@ -21,13 +20,13 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        if state == 0:
+        if objects.glob.game_state == 0:
             constants.startscreen.handle(event)
-        elif state == 1:
+        elif objects.glob.game_state == 1:
             constants.playscreen.handle(event)
 
-    groups["all_sprites"].update()
-    groups["all_sprites"].draw(screen)
+    objects.glob.groups["all_sprites"].update()
+    objects.glob.groups["all_sprites"].draw(objects.glob.screen)
     pygame.display.flip()
 
 pygame.quit()

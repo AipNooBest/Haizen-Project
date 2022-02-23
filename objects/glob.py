@@ -16,3 +16,4 @@ events = {
 }
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
+game_state = 0
