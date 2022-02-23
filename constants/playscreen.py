@@ -11,6 +11,10 @@ from objects.Image import Image
 # Глобальные переменные
 player: Player
 enemy: Enemy
+RESOURCES_X = FRAME_RIGHT + 40
+RESOURCES_Y = FRAME_BOTTOM * 3 / 4
+HP_sprites = []
+Bomb_sprites = []
 
 
 class PlayField(pygame.sprite.Sprite):
@@ -33,9 +37,12 @@ def init():
     pygame.time.set_timer(events["reloaded_event"], 400)
     player = Player()
     enemy = Enemy(80)
-    Text("ЖИЗНИ:", "Segoe Script", 30, "white", (FRAME_RIGHT + 40, FRAME_BOTTOM*3 / 4 - 40), "left")
+    Text("ЖИЗНИ:", "Segoe Script", 30, "white", (RESOURCES_X, RESOURCES_Y - 50), "left")
     for i in range(player.HP):
-        Image("assets/health-point.png", (FRAME_RIGHT + 40 + 35*i, FRAME_BOTTOM*3 / 4 + 10), "left")
+        HP_sprites.append(Image("assets/health-point.png", (RESOURCES_X + 35*i, RESOURCES_Y), "left"))
+    Text("БОМБЫ:", "Segoe Script", 30, "white", (RESOURCES_X, RESOURCES_Y + 50), "left")
+    for i in range(player.HP):   # TODO: Позже заменить на бомбы
+        Bomb_sprites.append(Image("assets/bomb.png", (RESOURCES_X + 35*i, RESOURCES_Y + 100), "left"))
 
 
 def handle(event):
@@ -51,3 +58,18 @@ def handle(event):
         objects.SpellCard.loop()
 
     screen.fill(BLACK)
+
+
+def update_sprites(sprite_type, action):
+    if sprite_type == "HP":
+        if action == "append":
+            HP_sprites.append(
+                Image("assets/health-point.png", (RESOURCES_X + 35*len(HP_sprites), RESOURCES_Y), "left"))
+        elif action == "reduce":
+            HP_sprites.pop().kill()
+    elif sprite_type == "BOMB":
+        if action == "append":
+            Bomb_sprites.append(
+                Image("assets/health-point.png", (RESOURCES_X + 35 * len(HP_sprites), RESOURCES_Y), "left"))
+        elif action == "reduce":
+            Bomb_sprites.pop().kill()
