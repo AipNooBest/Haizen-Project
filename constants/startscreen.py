@@ -41,7 +41,7 @@ def handle(event):
 
     selected %= len(buttons)
     buttons[selected].rect.x = DEF_BUTTON_X - 20
-    buttons[selected].change_text(None, None, None, "white")
+    buttons[selected].change_text(color="white")
 
 
 def unload():

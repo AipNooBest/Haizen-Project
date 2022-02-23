@@ -15,7 +15,7 @@ class Text(pygame.sprite.Sprite):
         self.alignment = self._align(position, alignment)
         self.add(objects.glob.groups["all_sprites"])
 
-    def change_text(self, text, font, size, color):
+    def change_text(self, text=None, font=None, size=None, color=None):
         if text is None: text = self.text
         if font is None: font = self._font
         if size is None: size = self._size
