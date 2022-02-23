@@ -7,8 +7,8 @@ from objects.Enemy import Enemy
 from objects.Player import Player
 
 # Глобальные переменные
-player = None
-enemy = None
+player: Player
+enemy: Enemy
 
 
 class PlayField(pygame.sprite.Sprite):
