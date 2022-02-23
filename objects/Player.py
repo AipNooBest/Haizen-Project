@@ -16,7 +16,7 @@ class Player(pygame.sprite.Sprite):
         self.HP = 1
         self.speedX = 0
         self.speedY = 0
-        self.reloaded = True
+        self.reloaded = False
         self.reload_speed = 60
         self.add(groups["all_sprites"])
 
