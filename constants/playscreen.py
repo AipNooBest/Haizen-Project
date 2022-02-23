@@ -5,6 +5,8 @@ from objects.glob import groups, events, screen
 from constants.window import *
 from objects.Enemy import Enemy
 from objects.Player import Player
+from objects.Text import Text
+from objects.Image import Image
 
 # Глобальные переменные
 player: Player
@@ -31,6 +33,9 @@ def init():
     pygame.time.set_timer(events["reloaded_event"], 400)
     player = Player()
     enemy = Enemy(80)
+    Text("ЖИЗНИ:", "Segoe Script", 30, "white", (FRAME_RIGHT + 40, FRAME_BOTTOM*3 / 4 - 40), "left")
+    for i in range(player.HP):
+        Image("assets/health-point.png", (FRAME_RIGHT + 40 + 35*i, FRAME_BOTTOM*3 / 4 + 10), "left")
 
 
 def handle(event):
