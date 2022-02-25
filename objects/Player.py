@@ -12,7 +12,7 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.Surface((23, 30))
         self.image.fill(GREEN)
         self.rect = self.image.get_rect()
-        self.rect.centerx = FRAME_LEFT + FRAME_RIGHT / 2
+        self.rect.centerx = (FRAME_LEFT + FRAME_RIGHT) / 2
         self.rect.centery = FRAME_BOTTOM - 40
         self.HP = 1
         self.speedX = 0
