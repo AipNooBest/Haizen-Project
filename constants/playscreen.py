@@ -61,10 +61,26 @@ def handle(event):
     if event.type == pygame.USEREVENT:
         player.reloaded = True
         pygame.time.set_timer(objects.glob.events["reloaded_event"], 0)
-    if event.type == pygame.USEREVENT + 1:
+    elif event.type == pygame.USEREVENT + 1:
         enemy.attack()
-    if event.type == pygame.USEREVENT + 2:
+    elif event.type == pygame.USEREVENT + 2:
         objects.SpellCard.loop()
+    elif event.type == pygame.USEREVENT + 3:
+        player.movable = True
+        player.speedY = 0
+    elif event.type == pygame.USEREVENT + 4:
+        pygame.time.set_timer(objects.glob.events["flashing"], 0, 0)
+        pygame.time.set_timer(objects.glob.events["invincibility_end"], 0, 0)
+        player.invincible = False
+        player.visible = True
+        player.image.set_alpha(255)
+    elif event.type == pygame.USEREVENT + 5:
+        if player.visible:
+            player.image.set_alpha(0)
+            player.visible = False
+        else:
+            player.image.set_alpha(255)
+            player.visible = True
 
     objects.glob.screen.fill(BLACK)
 
