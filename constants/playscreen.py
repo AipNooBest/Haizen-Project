@@ -1,8 +1,9 @@
 import pygame
 import objects.SpellCard
+import objects.glob
 
-from objects.glob import groups, events, screen
 from constants.window import *
+from constants.game_states import *
 from objects.Enemy import Enemy
 from objects.Player import Player
 from objects.Text import Text
@@ -17,6 +18,7 @@ RESOURCES_Y = FRAME_BOTTOM * 3 / 4
 HP_sprites = []
 Bomb_sprites = []
 health_bar: Bar
+paused = False
 
 
 class PlayField(pygame.sprite.Sprite):
@@ -28,15 +30,15 @@ class PlayField(pygame.sprite.Sprite):
         self._layer = 0
         self.rect.x = x
         self.rect.y = y
-        self.add(groups["all_sprites"])
-        self.add(groups["border"])
+        self.add(objects.glob.groups["all_sprites"])
+        self.add(objects.glob.groups["border"])
 
 
 def init():
     global player, enemy, health_bar
     PlayField(FRAME_LEFT, FRAME_TOP, FRAME_RIGHT-FRAME_LEFT, FRAME_BOTTOM-FRAME_TOP)
-    pygame.time.set_timer(events["enemy_attack_event"], 1000, 1)
-    pygame.time.set_timer(events["reloaded_event"], 400)
+    pygame.time.set_timer(objects.glob.events["enemy_attack_event"], 1000, 1)
+    pygame.time.set_timer(objects.glob.events["reloaded_event"], 400)
     player = Player()
     enemy = Enemy(120)
     Text("ЖИЗНИ:", "Segoe Script", 30, "white", (RESOURCES_X, RESOURCES_Y - 50), "left")
@@ -50,18 +52,21 @@ def init():
 
 
 def handle(event):
-    global player, enemy
-    if player is None or enemy is None:
+    global player, enemy, paused
+    if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+        paused = not paused
+        objects.glob.game_state = GameStates.PAUSED if paused else GameStates.PLAYING
+    if player is None or enemy is None or paused:
         return
     if event.type == pygame.USEREVENT:
         player.reloaded = True
-        pygame.time.set_timer(events["reloaded_event"], 0)
+        pygame.time.set_timer(objects.glob.events["reloaded_event"], 0)
     if event.type == pygame.USEREVENT + 1:
         enemy.attack()
     if event.type == pygame.USEREVENT + 2:
         objects.SpellCard.loop()
 
-    screen.fill(BLACK)
+    objects.glob.screen.fill(BLACK)
 
 
 def update_sprites(sprite_type, action, value=None):

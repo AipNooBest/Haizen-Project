@@ -4,6 +4,7 @@ import constants.startscreen
 import objects.glob
 
 from constants.window import *
+from constants.game_states import *
 
 # Инициализация
 pygame.init()
@@ -20,12 +21,13 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        if objects.glob.game_state == 0:
+        if objects.glob.game_state == GameStates.MAIN_MENU:
             constants.startscreen.handle(event)
-        elif objects.glob.game_state == 1:
+        elif objects.glob.game_state == GameStates.PLAYING or GameStates.PAUSED:
             constants.playscreen.handle(event)
 
-    objects.glob.groups["all_sprites"].update()
+    if objects.glob.game_state is not GameStates.PAUSED:
+        objects.glob.groups["all_sprites"].update()
     objects.glob.groups["all_sprites"].draw(objects.glob.screen)
     pygame.display.flip()
 
