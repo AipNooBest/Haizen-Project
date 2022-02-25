@@ -1,7 +1,7 @@
 import pygame
-import objects.glob
 
 from constants.window import *
+from objects import glob
 
 
 class Bar(pygame.sprite.Sprite):
@@ -13,8 +13,8 @@ class Bar(pygame.sprite.Sprite):
         self.rect.x, self.rect.y = FRAME_LEFT + 20, FRAME_TOP + 10
         self.max_value = max_value if max_value is not None else value
         self.rect.width = self.image.get_width() * value / self.max_value
-        self.add(objects.glob.groups["all_sprites"])
+        self.add(glob.Groups.all_sprites)
 
     def set_value(self, value):
-        value %= self.max_value
+        value = max(value, 0)
         self.image = pygame.transform.scale(self.image, (self.rect.width * value / self.max_value, 10))

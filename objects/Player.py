@@ -1,8 +1,8 @@
 import pygame
-import constants.playscreen
-import objects.glob
+import handlers.playscreen
 
 from constants.window import *
+from objects import glob
 from objects.Bullet import Bullet
 
 
@@ -15,28 +15,28 @@ class Player(pygame.sprite.Sprite):
         self.rect.centerx = (FRAME_LEFT + FRAME_RIGHT) / 2
         self.rect.centery = FRAME_BOTTOM - 40
         self.movable = True
-        self.invincible = False
+        self.god_mode = False
         self.visible = True
         self.HP = 3
         self.speedX = 0
         self.speedY = 0
         self.reloaded = False
         self.reload_speed = 60
-        self.add(objects.glob.groups["all_sprites"])
+        self.add(glob.Groups.all_sprites)
 
     def update(self) -> None:
-        if pygame.sprite.spritecollide(self, objects.glob.groups["enemy_bullets"], True) and not self.invincible:
-            constants.playscreen.update_sprites("PLAYER_HP", "reduce")
+        if pygame.sprite.spritecollide(self, glob.Groups.enemy_bullets, True) and not self.god_mode:
+            handlers.playscreen.update_sprites("PLAYER_HP", "reduce")
             self.HP -= 1
             self.respawn()
-            pygame.time.set_timer(objects.glob.events["flashing"], 100)
-        if self.HP <= 0:
+            pygame.time.set_timer(glob.Events.FLASHING, 100)
+        if self.HP < 0:
             self.kill()
         if not self.movable:
             self.rect.x += self.speedX
             self.rect.y += self.speedY
             return
-        if not self.visible and not self.invincible:
+        if not self.visible and not self.god_mode:
             self.visible = True
             self.image.set_alpha(255)
 
@@ -71,16 +71,16 @@ class Player(pygame.sprite.Sprite):
         if self.reloaded:
             self.reloaded = False
             speed = 20
-            pygame.time.set_timer(objects.glob.events["reloaded_event"], self.reload_speed)
-            objects.glob.groups["player_bullets"].add(Bullet("pin", self.rect.centerx - 10, self.rect.y - 15, 0, -speed))
-            objects.glob.groups["player_bullets"].add(Bullet("pin", self.rect.centerx + 5, self.rect.y - 15, 0, -speed))
+            pygame.time.set_timer(glob.Events.PLAYER_RELOAD, self.reload_speed)
+            glob.Groups.player_bullets.add(Bullet("pin", self.rect.centerx - 10, self.rect.y - 15, 0, -speed))
+            glob.Groups.player_bullets.add(Bullet("pin", self.rect.centerx + 5, self.rect.y - 15, 0, -speed))
 
     def respawn(self):
-        self.invincible = True
+        self.god_mode = True
         self.movable = False
         self.rect.centerx = (FRAME_LEFT + FRAME_RIGHT) / 2
         self.rect.centery = FRAME_BOTTOM + 40
         self.speedX = 0
         self.speedY = -1
-        pygame.time.set_timer(objects.glob.events["moving_end"], 1200, 0)
-        pygame.time.set_timer(objects.glob.events["invincibility_end"], 2000, 0)
+        pygame.time.set_timer(glob.Events.MOVING_END, 1200, 0)
+        pygame.time.set_timer(glob.Events.GOD_MODE_END, 2000, 0)

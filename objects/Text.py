@@ -1,5 +1,6 @@
 import pygame
-import objects.glob
+
+from objects import glob
 
 
 class Text(pygame.sprite.Sprite):
@@ -13,7 +14,7 @@ class Text(pygame.sprite.Sprite):
         self.rect = self.surface.get_rect()
         self.image = self.surface.subsurface(self.rect)
         self.alignment = self._align(position, alignment)
-        self.add(objects.glob.groups["all_sprites"])
+        self.add(glob.Groups.all_sprites)
 
     def change_text(self, text=None, font=None, size=None, color=None):
         if text is None: text = self.text

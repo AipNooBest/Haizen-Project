@@ -1,9 +1,10 @@
 import sys
 import pygame
-import constants.playscreen
-import objects.glob
+import handlers.playscreen
 
+from objects import glob
 from objects.Text import Text
+from constants.game_states import *
 from constants.window import *
 
 
@@ -22,8 +23,8 @@ def init():
 
 def handle(event):
     global selected
-    if objects.glob.game_state != 0: return
-    objects.glob.screen.fill("black")
+    if glob.game_state != GameStates.MAIN_MENU: return
+    glob.screen.fill("black")
     if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_DOWN:
             buttons[selected].rect.x = DEF_BUTTON_X
@@ -36,8 +37,8 @@ def handle(event):
         if event.key == pygame.K_z:
             if selected == 0:
                 unload()
-                constants.playscreen.init()
-                objects.glob.game_state = 1
+                handlers.playscreen.init()
+                glob.game_state = 1
                 return
             elif selected == 1:
                 pass
@@ -49,5 +50,5 @@ def handle(event):
 
 
 def unload():
-    objects.glob.groups["all_sprites"].empty()
+    glob.Groups.all_sprites.empty()
     buttons.clear()

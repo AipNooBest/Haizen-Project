@@ -1,9 +1,9 @@
 import pygame
 import objects.SpellCard
-import objects.glob
 
 from constants.window import *
 from constants.game_states import *
+from objects import glob
 from objects.Enemy import Enemy
 from objects.Player import Player
 from objects.Text import Text
@@ -30,15 +30,15 @@ class PlayField(pygame.sprite.Sprite):
         self._layer = 0
         self.rect.x = x
         self.rect.y = y
-        self.add(objects.glob.groups["all_sprites"])
-        self.add(objects.glob.groups["border"])
+        self.add(glob.Groups.all_sprites)
+        self.add(glob.Groups.border)
 
 
 def init():
     global player, enemy, health_bar
     PlayField(FRAME_LEFT, FRAME_TOP, FRAME_RIGHT-FRAME_LEFT, FRAME_BOTTOM-FRAME_TOP)
-    pygame.time.set_timer(objects.glob.events["enemy_attack_event"], 1000, 1)
-    pygame.time.set_timer(objects.glob.events["reloaded_event"], 400)
+    pygame.time.set_timer(glob.Events.ENEMY_ATTACK, 1000, 1)
+    pygame.time.set_timer(glob.Events.PLAYER_RELOAD, 400)
     player = Player()
     enemy = Enemy(120)
     Text("ЖИЗНИ:", "Segoe Script", 30, "white", (RESOURCES_X, RESOURCES_Y - 50), "left")
@@ -55,26 +55,26 @@ def handle(event):
     global player, enemy, paused
     if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
         paused = not paused
-        objects.glob.game_state = GameStates.PAUSED if paused else GameStates.PLAYING
+        glob.game_state = GameStates.PAUSED if paused else GameStates.PLAYING
     if player is None or enemy is None or paused:
         return
-    if event.type == pygame.USEREVENT:
+    if event.type == glob.Events.PLAYER_RELOAD:
         player.reloaded = True
-        pygame.time.set_timer(objects.glob.events["reloaded_event"], 0)
-    elif event.type == pygame.USEREVENT + 1:
+        pygame.time.set_timer(glob.Events.PLAYER_RELOAD, 0)
+    elif event.type == glob.Events.ENEMY_ATTACK:
         enemy.attack()
-    elif event.type == pygame.USEREVENT + 2:
+    elif event.type == glob.Events.ENEMY_RELOAD:
         objects.SpellCard.loop()
-    elif event.type == pygame.USEREVENT + 3:
+    elif event.type == glob.Events.MOVING_END:
         player.movable = True
         player.speedY = 0
-    elif event.type == pygame.USEREVENT + 4:
-        pygame.time.set_timer(objects.glob.events["flashing"], 0, 0)
-        pygame.time.set_timer(objects.glob.events["invincibility_end"], 0, 0)
-        player.invincible = False
+    elif event.type == glob.Events.GOD_MODE_END:
+        pygame.time.set_timer(glob.Events.FLASHING, 0, 0)
+        pygame.time.set_timer(glob.Events.GOD_MODE_END, 0, 0)
+        player.god_mode = False
         player.visible = True
         player.image.set_alpha(255)
-    elif event.type == pygame.USEREVENT + 5:
+    elif event.type == glob.Events.FLASHING:
         if player.visible:
             player.image.set_alpha(0)
             player.visible = False
@@ -82,7 +82,7 @@ def handle(event):
             player.image.set_alpha(255)
             player.visible = True
 
-    objects.glob.screen.fill(BLACK)
+    glob.screen.fill(BLACK)
 
 
 def update_sprites(sprite_type, action, value=None):

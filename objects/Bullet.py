@@ -1,7 +1,7 @@
 import pygame
 
 from constants.window import *
-from objects.glob import groups
+from objects import glob
 
 
 class Bullet(pygame.sprite.Sprite):
@@ -17,7 +17,7 @@ class Bullet(pygame.sprite.Sprite):
             pygame.draw.circle(self.image, WHITE, (radius, radius), radius)
             self.rect = pygame.Rect(startX, startY, radius * 2, radius * 2)
 
-        groups["all_sprites"].add(self)
+        glob.Groups.all_sprites.add(self)
         self._layer = 1
         self.rect.x = startX
         self.rect.y = startY

@@ -1,8 +1,8 @@
 import pygame
-import constants.playscreen
-import constants.startscreen
-import objects.glob
+import handlers.playscreen
+import handlers.main_menu
 
+from objects import glob
 from constants.window import *
 from constants.game_states import *
 
@@ -11,7 +11,7 @@ pygame.init()
 pygame.mixer.init()
 pygame.display.set_caption("Haizen Project")
 clock = pygame.time.Clock()
-constants.startscreen.init()
+handlers.main_menu.init()
 
 
 # Game loop
@@ -21,14 +21,14 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        if objects.glob.game_state == GameStates.MAIN_MENU:
-            constants.startscreen.handle(event)
-        elif objects.glob.game_state == GameStates.PLAYING or GameStates.PAUSED:
-            constants.playscreen.handle(event)
+        if glob.game_state == GameStates.MAIN_MENU:
+            handlers.main_menu.handle(event)
+        elif glob.game_state == GameStates.PLAYING or GameStates.PAUSED:
+            handlers.playscreen.handle(event)
 
-    if objects.glob.game_state is not GameStates.PAUSED:
-        objects.glob.groups["all_sprites"].update()
-    objects.glob.groups["all_sprites"].draw(objects.glob.screen)
+    if glob.game_state is not GameStates.PAUSED:
+        glob.Groups.all_sprites.update()
+    glob.Groups.all_sprites.draw(glob.screen)
     pygame.display.flip()
 
 pygame.quit()

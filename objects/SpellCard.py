@@ -1,8 +1,8 @@
 import pygame
 
 from math import sin, cos, radians
+from objects import glob
 from objects.Bullet import Bullet
-from objects.glob import groups, events
 
 
 class SpellCard:
@@ -25,12 +25,12 @@ def start(enemy, spell):
             current_atk.angle += 0.03
             current_atk.angle %= 360
             for i in range(8):
-                groups["enemy_bullets"].add(
+                glob.Groups.enemy_bullets.add(
                     Bullet("pellet", current_atk.relative_x, current_atk.relative_y,
                            current_atk.speed * cos(radians(sin(current_atk.angle)*900 + i * 45)),
                            current_atk.speed * sin(radians(sin(current_atk.angle)*900 + i * 45))))
     current_atk = SpellCard(8, 0, enemy.rect.centerx, enemy.rect.centery, attack)
-    pygame.time.set_timer(events["enemy_reloaded_event"], 50)
+    pygame.time.set_timer(glob.Events.ENEMY_RELOAD, 50)
 
 
 def loop():
@@ -39,5 +39,5 @@ def loop():
 
 def stop():
     global current_atk
-    pygame.time.set_timer(events["enemy_reloaded_event"], 0)
+    pygame.time.set_timer(glob.Events.ENEMY_RELOAD, 0)
     current_atk = SpellCard(0, 0, 0, 0, None)
