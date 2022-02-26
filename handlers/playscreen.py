@@ -42,10 +42,10 @@ def init():
     player = Player()
     enemy = Enemy(120)
     Text("ЖИЗНИ:", "Segoe Script", 30, "white", (RESOURCES_X, RESOURCES_Y - 50), "left")
-    for i in range(player.HP):
+    for i in range(player.lives):
         HP_sprites.append(Image("assets/health-point.png", (RESOURCES_X + 35*i, RESOURCES_Y), "left"))
     Text("БОМБЫ:", "Segoe Script", 30, "white", (RESOURCES_X, RESOURCES_Y + 50), "left")
-    for i in range(player.HP):   # TODO: Позже заменить на бомбы
+    for i in range(player.lives):   # TODO: Позже заменить на бомбы
         Bomb_sprites.append(Image("assets/bomb.png", (RESOURCES_X + 35*i, RESOURCES_Y + 100), "left"))
 
     health_bar = Bar(enemy.HP, enemy.max_HP)

@@ -23,3 +23,5 @@ class Events(enum.IntEnum):
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 game_state = 0
+lives = 3
+bombs = 3

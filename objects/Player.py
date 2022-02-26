@@ -17,7 +17,8 @@ class Player(pygame.sprite.Sprite):
         self.movable = True
         self.god_mode = False
         self.visible = True
-        self.HP = 3
+        self.lives = glob.lives
+        self.bombs = glob.bombs
         self.speedX = 0
         self.speedY = 0
         self.reloaded = False
@@ -27,10 +28,10 @@ class Player(pygame.sprite.Sprite):
     def update(self) -> None:
         if pygame.sprite.spritecollide(self, glob.Groups.enemy_bullets, True) and not self.god_mode:
             handlers.playscreen.update_sprites("PLAYER_HP", "reduce")
-            self.HP -= 1
+            self.lives -= 1
             self.respawn()
             pygame.time.set_timer(glob.Events.FLASHING, 100)
-        if self.HP < 0:
+        if self.lives < 0:
             self.kill()
         if not self.movable:
             self.rect.x += self.speedX
