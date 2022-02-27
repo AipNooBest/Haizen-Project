@@ -22,6 +22,7 @@ class Text(pygame.sprite.Sprite):
         if size is None: size = self._size
         if color is None: color = self._color
         old_position = (self.rect.x, self.rect.y)
+        self.text = text
         self.surface = _text_format(text, font, size, color)
         self.rect = self.surface.get_rect()
         self.image = self.surface.subsurface(self.rect)

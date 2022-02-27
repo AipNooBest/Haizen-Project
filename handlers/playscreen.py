@@ -45,7 +45,7 @@ def init():
     for i in range(player.lives):
         HP_sprites.append(Image("assets/health-point.png", (RESOURCES_X + 35*i, RESOURCES_Y), "left"))
     Text("БОМБЫ:", "Segoe Script", 30, "white", (RESOURCES_X, RESOURCES_Y + 50), "left")
-    for i in range(player.lives):   # TODO: Позже заменить на бомбы
+    for i in range(player.bombs):
         Bomb_sprites.append(Image("assets/bomb.png", (RESOURCES_X + 35*i, RESOURCES_Y + 100), "left"))
 
     health_bar = Bar(enemy.HP, enemy.max_HP)
@@ -91,7 +91,7 @@ def update_sprites(sprite_type, action, value=None):
             HP_sprites.append(
                 Image("assets/health-point.png", (RESOURCES_X + 35*len(HP_sprites), RESOURCES_Y), "left"))
         elif action == "reduce":
-            HP_sprites.pop().kill()
+            HP_sprites.pop().kill() if len(HP_sprites) > 0 else None
     elif sprite_type == "PLAYER_BOMB":
         if action == "append":
             Bomb_sprites.append(

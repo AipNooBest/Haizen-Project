@@ -25,7 +25,7 @@ def init():
     global state
     state = MenuState.START
     Text("Haizen Project", font, 32, "white", (WIDTH / 2, HEIGHT / 4), "center")
-    buttons.append(Text("Старт", font, 32, "white", (DEF_BUTTON_X, HEIGHT / 2), "right"))
+    buttons.append(Text("Старт", font, 32, "grey", (DEF_BUTTON_X, HEIGHT / 2), "right"))
     buttons.append(Text("Настройки", font, 32, "grey", (DEF_BUTTON_X, HEIGHT / 2 + 40), "right"))
     buttons.append(Text("Выход", font, 32, "grey", (DEF_BUTTON_X, HEIGHT / 2 + 80), "right"))
 
@@ -35,15 +35,6 @@ def handle(event):
     if glob.game_state != GameStates.MAIN_MENU: return
     glob.screen.fill("black")
     if event.type == pygame.KEYDOWN:
-        if event.key == pygame.K_DOWN:
-            buttons[selected].rect.x = DEF_BUTTON_X
-            buttons[selected].change_text(None, None, None, "grey")
-            selected += 1
-        if event.key == pygame.K_UP:
-            buttons[selected].rect.x = DEF_BUTTON_X
-            buttons[selected].change_text(None, None, None, "grey")
-            selected -= 1
-
         if state == MenuState.START:
             if event.key == pygame.K_z:
                 if selected == 0:
@@ -63,7 +54,6 @@ def handle(event):
                 if selected == 0:
                     glob.lives = (glob.lives + 1) % 5
                     buttons[0].change_text(text="Жизни : %i" % glob.lives)
-                    # buttons[0].change_text(text="")
                 elif selected == 1:
                     glob.bombs = (glob.bombs + 1) % 5
                     buttons[1].change_text(text="Бомбы : %i" % glob.bombs)
@@ -73,12 +63,22 @@ def handle(event):
             elif event.key == pygame.K_x:
                 if selected == 0:
                     glob.lives = (glob.lives - 1) % 5
+                    buttons[0].change_text(text="Жизни : %i" % glob.lives)
                 elif selected == 1:
                     glob.bombs = (glob.bombs - 1) % 5
+                    buttons[1].change_text(text="Бомбы : %i" % glob.bombs)
 
-        selected %= len(buttons)
-        buttons[selected].rect.x = DEF_BUTTON_X - 20
-        buttons[selected].change_text(color="white")
+        if event.key == pygame.K_DOWN:
+            buttons[selected].rect.x = DEF_BUTTON_X
+            buttons[selected].change_text(None, None, None, "grey")
+            selected += 1
+        if event.key == pygame.K_UP:
+            buttons[selected].rect.x = DEF_BUTTON_X
+            buttons[selected].change_text(None, None, None, "grey")
+            selected -= 1
+    selected %= len(buttons)
+    buttons[selected].rect.x = DEF_BUTTON_X - 20
+    buttons[selected].change_text(color="white")
 
 
 def _open_settings():
