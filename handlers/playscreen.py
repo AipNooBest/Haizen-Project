@@ -40,19 +40,18 @@ def init():
     pygame.time.set_timer(glob.Events.ENEMY_ATTACK, 1000, 1)
     pygame.time.set_timer(glob.Events.PLAYER_RELOAD, 400)
     player = Player()
-    enemy = Enemy(120)
+    enemy = Enemy([2, 1])
     Text("ЖИЗНИ:", "Segoe Script", 30, "white", (RESOURCES_X, RESOURCES_Y - 50), "left")
     for i in range(player.lives):
         HP_sprites.append(Image("assets/health-point.png", (RESOURCES_X + 35*i, RESOURCES_Y), "left"))
     Text("БОМБЫ:", "Segoe Script", 30, "white", (RESOURCES_X, RESOURCES_Y + 50), "left")
     for i in range(player.bombs):
         Bomb_sprites.append(Image("assets/bomb.png", (RESOURCES_X + 35*i, RESOURCES_Y + 100), "left"))
-
-    health_bar = Bar(enemy.HP, enemy.max_HP)
+    health_bar = Bar(1, 1)
 
 
 def handle(event):
-    global player, enemy, paused
+    global player, enemy, paused, health_bar
     if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
         paused = not paused
         glob.game_state = GameStates.PAUSED if paused else GameStates.PLAYING
@@ -62,7 +61,9 @@ def handle(event):
         player.reloaded = True
         pygame.time.set_timer(glob.Events.PLAYER_RELOAD, 0)
     elif event.type == glob.Events.ENEMY_ATTACK:
-        enemy.attack(2)
+        enemy.attack(enemy.atk_sequence[len(enemy.atk_sequence) - 1])
+        health_bar.kill()
+        health_bar = Bar(enemy.HP, enemy.max_HP)
     elif event.type == glob.Events.ENEMY_RELOAD:
         objects.SpellCard.loop()
     elif event.type == glob.Events.MOVING_END:
@@ -105,4 +106,5 @@ def update_sprites(sprite_type, action, value=None):
             Bomb_sprites.pop().kill() if len(Bomb_sprites) > 0 else None
     elif sprite_type == "ENEMY_HP":
         if action == "set":
+            if value == -1: return
             health_bar.set_value(value)

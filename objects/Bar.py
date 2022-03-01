@@ -16,5 +16,5 @@ class Bar(pygame.sprite.Sprite):
         self.add(glob.Groups.all_sprites)
 
     def set_value(self, value):
-        value = max(value, 0)
+        if value == 0: self.kill()
         self.image = pygame.transform.scale(self.image, (self.rect.width * value / self.max_value, 10))
