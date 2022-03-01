@@ -19,9 +19,12 @@ class Events(enum.IntEnum):
     MOVING_END = pygame.USEREVENT + 3
     GOD_MODE_END = pygame.USEREVENT + 4
     FLASHING = pygame.USEREVENT + 5
+    BOMB_ATTACK = pygame.USEREVENT + 6
+    BOMB_RELOAD = pygame.USEREVENT + 7
 
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 game_state = 0
 lives = 3
 bombs = 3
+bomb_type = 0

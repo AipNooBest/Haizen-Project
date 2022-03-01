@@ -81,6 +81,11 @@ def handle(event):
         else:
             player.image.set_alpha(255)
             player.visible = True
+    elif event.type == glob.Events.BOMB_ATTACK:
+        player.handle_bombs(enemy)
+    elif event.type == glob.Events.BOMB_RELOAD:
+        player.using_bomb = False
+        pygame.time.set_timer(glob.Events.BOMB_ATTACK, 0, 0)
 
     glob.screen.fill(BLACK)
 
@@ -97,7 +102,7 @@ def update_sprites(sprite_type, action, value=None):
             Bomb_sprites.append(
                 Image("assets/health-point.png", (RESOURCES_X + 35 * len(HP_sprites), RESOURCES_Y), "left"))
         elif action == "reduce":
-            Bomb_sprites.pop().kill()
+            Bomb_sprites.pop().kill() if len(Bomb_sprites) > 0 else None
     elif sprite_type == "ENEMY_HP":
         if action == "set":
             health_bar.set_value(value)
