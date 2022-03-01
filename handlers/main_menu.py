@@ -50,7 +50,7 @@ def handle(event):
                     sys.exit()
 
         elif state == MenuState.SETTINGS:
-            if event.key == pygame.K_z:
+            if event.key == pygame.K_RIGHT or (event.key == pygame.K_z and not selected == len(buttons)-1):
                 if selected == 0:
                     glob.lives = (glob.lives + 1) % 5
                     buttons[0].change_text(text="Жизни : %i" % glob.lives)
@@ -58,15 +58,40 @@ def handle(event):
                     glob.bombs = (glob.bombs + 1) % 5
                     buttons[1].change_text(text="Бомбы : %i" % glob.bombs)
                 elif selected == 2:
-                    _unload()
-                    init()
-            elif event.key == pygame.K_x:
+                    glob.bomb_type = (glob.bomb_type + 1) % 2
+                    buttons[2].change_text(text="Тип бомб : %i" % glob.bomb_type)
+                elif selected == 3:
+                    glob.difficulty = (glob.difficulty + 1) % 2
+                    if glob.difficulty == glob.Difficulty.NORMAL:
+                        difficulty = "НОРМАЛЬНАЯ"
+                    else:
+                        difficulty = "СЛОЖНАЯ"
+                    buttons[3].change_text(text="Сложность : %s" % difficulty)
+            elif event.key == pygame.K_LEFT:
                 if selected == 0:
                     glob.lives = (glob.lives - 1) % 5
                     buttons[0].change_text(text="Жизни : %i" % glob.lives)
                 elif selected == 1:
                     glob.bombs = (glob.bombs - 1) % 5
                     buttons[1].change_text(text="Бомбы : %i" % glob.bombs)
+                elif selected == 2:
+                    glob.bomb_type = (glob.bomb_type - 1) % 2
+                    buttons[2].change_text(text="Тип бомб : %i" % glob.bomb_type)
+                elif selected == 3:
+                    glob.difficulty = (glob.difficulty - 1) % 2
+                    if glob.difficulty == glob.Difficulty.NORMAL:
+                        difficulty = "НОРМАЛЬНАЯ"
+                    else:
+                        difficulty = "СЛОЖНАЯ"
+                    buttons[3].change_text(text="Сложность : %s" % difficulty)
+            elif event.key == pygame.K_z:
+                if selected == 4:
+                    _unload()
+                    init()
+            elif event.key == pygame.K_x:
+                buttons[selected].rect.x = DEF_BUTTON_X
+                buttons[selected].change_text(None, None, None, "grey")
+                selected = 4
 
         if event.key == pygame.K_DOWN:
             buttons[selected].rect.x = DEF_BUTTON_X
@@ -85,9 +110,10 @@ def _open_settings():
     global state
     state = MenuState.SETTINGS
     Text("Haizen Project", font, 32, "white", (WIDTH / 2, HEIGHT / 4), "center")
-    buttons.append(Text("Жизни : %i" % glob.lives, font, 32, "grey", (DEF_BUTTON_X, HEIGHT / 2), "right"))
-    buttons.append(Text("Бомбы : %i" % glob.bombs, font, 32, "grey", (DEF_BUTTON_X, HEIGHT / 2 + 40), "right"))
-    buttons.append(Text("Назад", font, 32, "grey", (DEF_BUTTON_X, HEIGHT / 2 + 80), "right"))
+    labels = ["Жизни : %i" % glob.lives, "Бомбы : %i" % glob.bombs,
+              "Тип бомб : %i" % glob.bomb_type, "Сложность : %s" % "НОРМАЛЬНАЯ", "Назад"]
+    for i in range(len(labels)):
+        buttons.append(Text(labels[i], font, 32, "grey", (DEF_BUTTON_X, HEIGHT / 2 + i*40), "right"))
 
 
 def _unload():

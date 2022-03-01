@@ -23,8 +23,14 @@ class Events(enum.IntEnum):
     BOMB_RELOAD = pygame.USEREVENT + 7
 
 
+class Difficulty(enum.IntEnum):
+    NORMAL = 0
+    HARD = 1
+
+
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 game_state = 0
 lives = 3
 bombs = 3
 bomb_type = 0
+difficulty = Difficulty.NORMAL
