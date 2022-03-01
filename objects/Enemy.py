@@ -31,5 +31,5 @@ class Enemy(pygame.sprite.Sprite):
             objects.SpellCard.stop()
             self.kill()
 
-    def attack(self):
-        objects.SpellCard.start(self, 1)
+    def attack(self, attack_type):
+        objects.SpellCard.start(self, attack_type)

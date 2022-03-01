@@ -62,7 +62,7 @@ def handle(event):
         player.reloaded = True
         pygame.time.set_timer(glob.Events.PLAYER_RELOAD, 0)
     elif event.type == glob.Events.ENEMY_ATTACK:
-        enemy.attack()
+        enemy.attack(2)
     elif event.type == glob.Events.ENEMY_RELOAD:
         objects.SpellCard.loop()
     elif event.type == glob.Events.MOVING_END:
