@@ -5,6 +5,7 @@ from math import sin, cos, radians
 from constants.window import *
 from objects import glob
 from objects.Bullet import Bullet
+from objects.SpellCard import SpellCard
 
 
 class Player(pygame.sprite.Sprite):
@@ -106,28 +107,11 @@ class Player(pygame.sprite.Sprite):
         pygame.time.set_timer(glob.Events.FLASHING, 100)
 
 
-class _Bomb:
-    def __init__(self, speed, angle, radius, relative_x=None, relative_y=None):
-        self.speed = speed
-        self.angle = angle
-        self.radius = radius
-        self.relative_x = relative_x
-        self.relative_y = relative_y
-        self.attack = None
-
-    def set_attack(self, attack):
-        self.attack = attack
-
-    def set_coords(self, x, y):
-        self.relative_x = x
-        self.relative_y = y
-
-
 def _init_bomb(bomb_type):
     if bomb_type == 0:
         speed = -5
         radius = 170
-        bomb = _Bomb(speed, 0, radius)
+        bomb = SpellCard(speed, 0, radius)
 
         def attack(target):
             if target is None: raise Exception("Target not found!")
@@ -137,6 +121,6 @@ def _init_bomb(bomb_type):
                     Bullet("pellet", target.rect.centerx + cos(radians(i * 60 + bomb.angle)) * radius,
                            target.rect.centery + sin(radians(i * 60 + bomb.angle)) * radius,
                            speed * cos(radians(i * 60 + bomb.angle)), speed * sin(radians(i * 60 + bomb.angle))))
-            bomb.set_coords(target.rect.centerx, target.rect.centery)
+            bomb.set_target(target)
         bomb.set_attack(attack)
         return bomb
