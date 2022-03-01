@@ -40,7 +40,10 @@ def init():
     pygame.time.set_timer(glob.Events.ENEMY_ATTACK, 1000, 1)
     pygame.time.set_timer(glob.Events.PLAYER_RELOAD, 400)
     player = Player()
-    enemy = Enemy([2, 1])
+    if glob.difficulty == glob.Difficulty.NORMAL:
+        enemy = Enemy([5, 4])
+    if glob.difficulty == glob.Difficulty.HARD:
+        enemy = Enemy([2, 1])
     Text("ЖИЗНИ:", "Segoe Script", 30, "white", (RESOURCES_X, RESOURCES_Y - 50), "left")
     for i in range(player.lives):
         HP_sprites.append(Image("assets/health-point.png", (RESOURCES_X + 35*i, RESOURCES_Y), "left"))
