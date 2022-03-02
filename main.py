@@ -17,7 +17,6 @@ handlers.main_menu.init()
 # Game loop
 running = True
 while running:
-    clock.tick(FPS)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -29,6 +28,7 @@ while running:
     if glob.game_state is not GameStates.PAUSED:
         glob.Groups.all_sprites.update()
     glob.Groups.all_sprites.draw(glob.screen)
+    clock.tick(FPS)
     pygame.display.flip()
 
 pygame.quit()
