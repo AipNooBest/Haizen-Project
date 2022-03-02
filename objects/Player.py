@@ -77,7 +77,7 @@ class Player(pygame.sprite.Sprite):
             self.rect.x += self.speedX
             self.rect.y += self.speedY
 
-        self.hitbox.rect.centerx = self.rect.centerx - 3
+        self.hitbox.rect.centerx = self.rect.centerx + 1
         self.hitbox.rect.centery = self.rect.centery + 9
 
     def shoot(self):

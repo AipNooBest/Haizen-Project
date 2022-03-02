@@ -1,3 +1,4 @@
+import os
 import pygame
 
 from constants.window import *
@@ -8,8 +9,7 @@ class Bullet(pygame.sprite.Sprite):
     def __init__(self, type, startX, startY, speedX, speedY):
         pygame.sprite.Sprite.__init__(self)
         if type == "pin":
-            self.image = pygame.Surface((6, 10))
-            self.image.fill(WHITE)
+            self.image = pygame.image.load(os.path.join("assets/pin_bullet.png")).convert_alpha()
             self.rect = self.image.get_rect()
         if type == "pellet":
             radius = 4
