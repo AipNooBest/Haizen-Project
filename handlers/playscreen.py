@@ -20,6 +20,7 @@ HP_sprites = []
 Bomb_sprites = []
 health_bar: Bar
 paused = False
+score_text: Text
 
 
 class PlayField(pygame.sprite.Sprite):
@@ -36,7 +37,7 @@ class PlayField(pygame.sprite.Sprite):
 
 
 def init():
-    global player, enemy, health_bar
+    global player, enemy, health_bar, score_text
     PlayField(FRAME_LEFT, FRAME_TOP, FRAME_RIGHT-FRAME_LEFT, FRAME_BOTTOM-FRAME_TOP)
     pygame.time.set_timer(glob.Events.ENEMY_ATTACK, 1000, 1)
     pygame.time.set_timer(glob.Events.PLAYER_RELOAD, 400)
@@ -51,6 +52,8 @@ def init():
     Text("БОМБЫ:", "Segoe Script", 30, "white", (RESOURCES_X, RESOURCES_Y + 50), "left")
     for i in range(player.bombs):
         Bomb_sprites.append(Image("assets/bomb.png", (RESOURCES_X + 35*i, RESOURCES_Y + 100), "left"))
+    Text("СЧЁТ", "Segoe Script", 30, "white", (RESOURCES_X + 125, RESOURCES_Y - 300), "center")
+    score_text = Text("{:08}".format(glob.score), "Segoe Script", 32, "white", (RESOURCES_X + 40, RESOURCES_Y - 270), "left")
     health_bar = Bar(1, 1)
     music = pygame.mixer.Sound('assets/A Shower of Strange Occurrences.wav')
     music.play(1)
@@ -115,3 +118,6 @@ def update_sprites(sprite_type, action, value=None):
         if action == "set":
             if value == -1: return
             health_bar.set_value(value)
+    elif sprite_type == "SCORE":
+        if action == "set":
+            score_text.change_text(text="{:08.0f}".format(glob.score))

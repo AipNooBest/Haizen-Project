@@ -34,3 +34,4 @@ lives = 3
 bombs = 3
 bomb_type = 0
 difficulty = Difficulty.NORMAL
+score = 0

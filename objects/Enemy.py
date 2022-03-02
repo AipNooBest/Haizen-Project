@@ -28,7 +28,9 @@ class Enemy(pygame.sprite.Sprite):
         if self.HP is None: return
         for _ in hits:
             self.HP -= 1
+            glob.score = glob.score + 100 * ((0.5*0.98**glob.lives) + (0.5*0.98**glob.bombs)) * (glob.difficulty+1)
             handlers.playscreen.update_sprites("ENEMY_HP", "set", max(self.HP, 0))
+            handlers.playscreen.update_sprites("SCORE", "set", glob.score)
 
         if self.HP <= 0:
             objects.SpellCard.stop()
