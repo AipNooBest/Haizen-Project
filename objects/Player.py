@@ -14,7 +14,7 @@ class Player(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(os.path.join("assets/player.png")).convert_alpha()
         self.rect = self.image.get_rect()
-        self.hitbox = PlayerHitbox(self.rect.centerx - 3, self.rect.centery + 9)
+        self.hitbox = _PlayerHitbox(self.rect.centerx - 3, self.rect.centery + 9)
         self.rect.centerx = (FRAME_LEFT + FRAME_RIGHT) / 2
         self.rect.centery = FRAME_BOTTOM - 40
         self.movable = True
@@ -35,7 +35,7 @@ class Player(pygame.sprite.Sprite):
                 and not self.god_mode:
             handlers.playscreen.update_sprites("PLAYER_HP", "reduce")
             self.lives -= 1
-            self.respawn()
+            self._respawn()
         if self.lives < 0:
             self.kill()
         if not self.visible and not self.god_mode:
@@ -43,36 +43,7 @@ class Player(pygame.sprite.Sprite):
             self.image.set_alpha(255)
 
         if self.movable:
-            self.hitbox.image.set_alpha(0)
-            self.speedX = 0
-            self.speedY = 0
-            keystate = pygame.key.get_pressed()
-            if keystate[pygame.K_LEFT]:
-                self.speedX = -6
-            if keystate[pygame.K_RIGHT]:
-                self.speedX = 6
-            if keystate[pygame.K_UP]:
-                self.speedY = -6
-            if keystate[pygame.K_DOWN]:
-                self.speedY = 6
-            if keystate[pygame.K_LSHIFT]:
-                self.hitbox.image.set_alpha(255)
-                self.speedX /= 2
-                self.speedY /= 2
-            if keystate[pygame.K_z]:
-                self.shoot()
-            if keystate[pygame.K_x] and not self.using_bomb and self.bombs > 0:
-                self.use_bomb()
-            self.rect.x += self.speedX
-            self.rect.y += self.speedY
-            if self.rect.right > FRAME_RIGHT:
-                self.rect.right = FRAME_RIGHT
-            if self.rect.left < FRAME_LEFT:
-                self.rect.left = FRAME_LEFT
-            if self.rect.bottom > FRAME_BOTTOM:
-                self.rect.bottom = FRAME_BOTTOM
-            if self.rect.top < FRAME_TOP:
-                self.rect.top = FRAME_TOP
+            self._handle_movement()
         else:
             self.rect.x += self.speedX
             self.rect.y += self.speedY
@@ -80,7 +51,13 @@ class Player(pygame.sprite.Sprite):
         self.hitbox.rect.centerx = self.rect.centerx + 1
         self.hitbox.rect.centery = self.rect.centery + 9
 
-    def shoot(self):
+    def handle_bombs(self, player, enemy):
+        if glob.bomb_type == 0:
+            self.bomb_type.attack(enemy)
+        elif glob.bomb_type == 1:
+            self.bomb_type.attack(player)
+
+    def _shoot(self):
         if self.reloaded:
             self.reloaded = False
             speed = 20
@@ -88,7 +65,7 @@ class Player(pygame.sprite.Sprite):
             glob.Groups.player_bullets.add(Bullet("pin", self.rect.centerx - 10, self.rect.y - 15, 0, -speed))
             glob.Groups.player_bullets.add(Bullet("pin", self.rect.centerx + 5, self.rect.y - 15, 0, -speed))
 
-    def use_bomb(self):
+    def _use_bomb(self):
         self.bombs -= 1
         handlers.playscreen.update_sprites("PLAYER_BOMB", "reduce")
         self.god_mode = True
@@ -99,13 +76,39 @@ class Player(pygame.sprite.Sprite):
         pygame.time.set_timer(glob.Events.BOMB_RELOAD, 500, 1)
         pygame.time.set_timer(glob.Events.BOMB_ATTACK, 30)
 
-    def handle_bombs(self, player, enemy):
-        if glob.bomb_type == 0:
-            self.bomb_type.attack(enemy)
-        elif glob.bomb_type == 1:
-            self.bomb_type.attack(player)
+    def _handle_movement(self):
+        self.hitbox.image.set_alpha(0)
+        self.speedX = 0
+        self.speedY = 0
+        keystate = pygame.key.get_pressed()
+        if keystate[pygame.K_LEFT]:
+            self.speedX = -6
+        if keystate[pygame.K_RIGHT]:
+            self.speedX = 6
+        if keystate[pygame.K_UP]:
+            self.speedY = -6
+        if keystate[pygame.K_DOWN]:
+            self.speedY = 6
+        if keystate[pygame.K_LSHIFT]:
+            self.hitbox.image.set_alpha(255)
+            self.speedX /= 2
+            self.speedY /= 2
+        if keystate[pygame.K_z]:
+            self._shoot()
+        if keystate[pygame.K_x] and not self.using_bomb and self.bombs > 0:
+            self._use_bomb()
+        self.rect.x += self.speedX
+        self.rect.y += self.speedY
+        if self.rect.right > FRAME_RIGHT:
+            self.rect.right = FRAME_RIGHT
+        if self.rect.left < FRAME_LEFT:
+            self.rect.left = FRAME_LEFT
+        if self.rect.bottom > FRAME_BOTTOM:
+            self.rect.bottom = FRAME_BOTTOM
+        if self.rect.top < FRAME_TOP:
+            self.rect.top = FRAME_TOP
 
-    def respawn(self):
+    def _respawn(self):
         self.god_mode = True
         self.movable = False
         self.rect.centerx = (FRAME_LEFT + FRAME_RIGHT) / 2
@@ -152,7 +155,7 @@ def _init_bomb(bomb_type):
         return bomb
 
 
-class PlayerHitbox(pygame.sprite.Sprite):
+class _PlayerHitbox(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
         self.radius = 4
