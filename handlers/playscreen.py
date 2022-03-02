@@ -1,3 +1,4 @@
+import os
 import pygame
 import objects.SpellCard
 
@@ -25,8 +26,8 @@ class PlayField(pygame.sprite.Sprite):
     def __init__(self, x, y, width, height):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.Surface((width, height))
-        self.image.fill('darkgreen')
         self.rect = self.image.get_rect()
+        self.image.blit(pygame.image.load(os.path.join("assets/background.png")).convert_alpha(), self.rect)
         self._layer = 0
         self.rect.x = x
         self.rect.y = y
