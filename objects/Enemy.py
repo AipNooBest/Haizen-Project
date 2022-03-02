@@ -1,3 +1,4 @@
+import os
 import pygame
 import objects.SpellCard
 import handlers.playscreen
@@ -10,8 +11,7 @@ from typing import List
 class Enemy(pygame.sprite.Sprite):
     def __init__(self, atk_sequence: List[int]):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((40, 50))
-        self.image.fill(RED)
+        self.image = pygame.image.load(os.path.join("assets/enemy.png")).convert_alpha()
         self.rect = self.image.get_rect()
         self.rect.centerx = (FRAME_LEFT + FRAME_RIGHT) / 2
         self.rect.centery = 160
