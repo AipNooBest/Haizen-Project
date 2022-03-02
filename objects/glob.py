@@ -28,7 +28,7 @@ class Difficulty(enum.IntEnum):
     HARD = 1
 
 
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
+screen = pygame.display.set_mode((WIDTH, HEIGHT), vsync=1)
 game_state = 0
 lives = 3
 bombs = 3

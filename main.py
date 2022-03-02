@@ -1,3 +1,4 @@
+import os
 import pygame
 import handlers.playscreen
 import handlers.main_menu
@@ -10,6 +11,7 @@ from constants.game_states import *
 pygame.init()
 pygame.mixer.init()
 pygame.display.set_caption("Haizen Project")
+pygame.display.set_icon(pygame.image.load(os.path.join("assets/icon.ico")).convert_alpha())
 clock = pygame.time.Clock()
 handlers.main_menu.init()
 
