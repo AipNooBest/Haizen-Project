@@ -87,7 +87,7 @@ def handle(event):
             player.image.set_alpha(255)
             player.visible = True
     elif event.type == glob.Events.BOMB_ATTACK:
-        player.handle_bombs(enemy)
+        player.handle_bombs(player, enemy)
     elif event.type == glob.Events.BOMB_RELOAD:
         player.using_bomb = False
         pygame.time.set_timer(glob.Events.BOMB_ATTACK, 0, 0)

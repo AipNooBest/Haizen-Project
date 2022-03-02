@@ -99,8 +99,11 @@ class Player(pygame.sprite.Sprite):
         pygame.time.set_timer(glob.Events.BOMB_RELOAD, 500, 1)
         pygame.time.set_timer(glob.Events.BOMB_ATTACK, 30)
 
-    def handle_bombs(self, enemy):
-        self.bomb_type.attack(enemy)
+    def handle_bombs(self, player, enemy):
+        if glob.bomb_type == 0:
+            self.bomb_type.attack(enemy)
+        elif glob.bomb_type == 1:
+            self.bomb_type.attack(player)
 
     def respawn(self):
         self.god_mode = True
@@ -129,6 +132,22 @@ def _init_bomb(bomb_type):
                            target.rect.centery + sin(radians(i * 60 + bomb.angle)) * radius,
                            speed * cos(radians(i * 60 + bomb.angle)), speed * sin(radians(i * 60 + bomb.angle))))
             bomb.set_target(target)
+        bomb.set_attack(attack)
+        return bomb
+
+    if bomb_type == 1:
+        speed = 8
+        radius = 30
+        bomb = SpellCard(speed, 0, radius)
+
+        def attack(caster):
+            bomb.angle = (bomb.angle + 6) % 360
+            for i in range(18):
+                glob.Groups.player_bullets.add(
+                    Bullet("pellet", caster.rect.centerx + cos(radians(i * 20 + bomb.angle)) * radius,
+                           caster.rect.centery + sin(radians(i * 20 + bomb.angle)) * radius,
+                           speed * cos(radians(i * 20 + bomb.angle)), speed * sin(radians(i * 20 + bomb.angle))))
+            bomb.set_caster(caster)
         bomb.set_attack(attack)
         return bomb
 
