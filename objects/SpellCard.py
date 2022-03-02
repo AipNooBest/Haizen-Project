@@ -39,7 +39,7 @@ def start(boss, spell):
     global card
     if spell == 1:
         card = SpellCard(8, 0, 0, boss)
-        boss.HP = boss.max_HP = 120
+        boss.HP = boss.max_HP = 180
 
         def attack():
             card.angle += 0.03
@@ -54,7 +54,7 @@ def start(boss, spell):
 
     if spell == 2:
         card = SpellCard(-9, 0, 120, boss)
-        boss.HP = boss.max_HP = 180
+        boss.HP = boss.max_HP = 240
 
         def attack():
             card.angle = card.angle + 12 % 360
@@ -72,7 +72,7 @@ def start(boss, spell):
 
     if spell == 4:
         card = SpellCard(8, 0, 0, boss)
-        boss.HP = boss.max_HP = 120
+        boss.HP = boss.max_HP = 180
 
         def attack():
             card.angle += 0.03
@@ -88,7 +88,7 @@ def start(boss, spell):
 
     if spell == 5:
         card = SpellCard(-9, 0, 120, boss)
-        boss.HP = boss.max_HP = 180
+        boss.HP = boss.max_HP = 240
 
         def attack():
             card.angle = card.angle + 12 % 360

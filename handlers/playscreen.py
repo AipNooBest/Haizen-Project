@@ -52,6 +52,9 @@ def init():
     for i in range(player.bombs):
         Bomb_sprites.append(Image("assets/bomb.png", (RESOURCES_X + 35*i, RESOURCES_Y + 100), "left"))
     health_bar = Bar(1, 1)
+    music = pygame.mixer.Sound('assets/A Shower of Strange Occurrences.wav')
+    music.play(1)
+    music.set_volume(0.3)
 
 
 def handle(event):
