@@ -21,11 +21,11 @@ class Bullet(pygame.sprite.Sprite):
         self._layer = 1
         self.rect.x = startX
         self.rect.y = startY
-        self.speedx = speedX
-        self.speedy = speedY
+        self.position = pygame.math.Vector2(startX, startY)
+        self.velocity = pygame.math.Vector2(speedX, speedY)
 
     def update(self):
-        self.rect.x += self.speedx
-        self.rect.y += self.speedy
+        self.position += self.velocity
+        self.rect.center = round(self.position[0]), round(self.position[1])
         if self.rect.top < FRAME_TOP or self.rect.left < FRAME_LEFT or self.rect.right > FRAME_RIGHT or self.rect.bottom > FRAME_BOTTOM:
             self.kill()
