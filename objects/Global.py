@@ -1,5 +1,6 @@
 import pygame
 import enum
+import UI.handlers.main_menu
 
 from constants.window import WIDTH, HEIGHT
 
@@ -23,15 +24,29 @@ class Events(enum.IntEnum):
     BOMB_RELOAD = pygame.USEREVENT + 7
 
 
+class GameStates(enum.IntEnum):
+    MAIN_MENU = 0
+    EXIT = 1
+    PLAYING = 2
+    PAUSED = 3
+    GAME_OVER = 4
+    WIN = 5
+
+
 class Difficulty(enum.IntEnum):
     NORMAL = 0
     HARD = 1
 
 
-screen = pygame.display.set_mode((WIDTH, HEIGHT), vsync=1)
-game_state = 0
-lives = 3
-bombs = 3
-bomb_type = 0
-difficulty = Difficulty.NORMAL
-score = 0
+class Settings:
+    lives = 3
+    bombs = 3
+    bomb_type = 0
+    difficulty = Difficulty.NORMAL
+
+
+class Variables:
+    screen = pygame.display.set_mode((WIDTH, HEIGHT), vsync=1)
+    game_state = GameStates.MAIN_MENU
+    current_screen = UI.handlers.main_menu.MainMenu()
+    top_score = 0

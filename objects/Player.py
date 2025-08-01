@@ -4,7 +4,7 @@ import handlers.playscreen
 
 from math import sin, cos, radians
 from constants.window import *
-from objects import glob
+from objects import Global
 from objects.Bullet import Bullet
 from objects.SpellCard import SpellCard
 
@@ -21,17 +21,17 @@ class Player(pygame.sprite.Sprite):
         self.god_mode = False
         self.using_bomb = False
         self.visible = True
-        self.lives = glob.lives
-        self.bombs = glob.bombs
-        self.bomb_type = _init_bomb(glob.bomb_type)
+        self.lives = Global.lives
+        self.bombs = Global.bombs
+        self.bomb_type = _init_bomb(Global.bomb_type)
         self.speedX = 0
         self.speedY = 0
         self.reloaded = False
         self.reload_speed = 60
-        self.add(glob.Groups.all_sprites)
+        self.add(Global.Groups.all_sprites)
 
     def update(self) -> None:
-        if pygame.sprite.spritecollide(self.hitbox, glob.Groups.enemy_bullets, True, pygame.sprite.collide_circle)\
+        if pygame.sprite.spritecollide(self.hitbox, Global.Groups.enemy_bullets, True, pygame.sprite.collide_circle)\
                 and not self.god_mode:
             handlers.playscreen.update_sprites("PLAYER_HP", "reduce")
             self.lives -= 1
@@ -52,29 +52,29 @@ class Player(pygame.sprite.Sprite):
         self.hitbox.rect.centery = self.rect.centery + 9
 
     def handle_bombs(self, player, enemy):
-        if glob.bomb_type == 0:
+        if Global.bomb_type == 0:
             self.bomb_type.attack(enemy)
-        elif glob.bomb_type == 1:
+        elif Global.bomb_type == 1:
             self.bomb_type.attack(player)
 
     def _shoot(self):
         if self.reloaded:
             self.reloaded = False
             speed = 20
-            pygame.time.set_timer(glob.Events.PLAYER_RELOAD, self.reload_speed)
-            glob.Groups.player_bullets.add(Bullet("pin", self.rect.centerx - 10, self.rect.y - 15, 0, -speed))
-            glob.Groups.player_bullets.add(Bullet("pin", self.rect.centerx + 5, self.rect.y - 15, 0, -speed))
+            pygame.time.set_timer(Global.Events.PLAYER_RELOAD, self.reload_speed)
+            Global.Groups.player_bullets.add(Bullet("pin", self.rect.centerx - 10, self.rect.y - 15, 0, -speed))
+            Global.Groups.player_bullets.add(Bullet("pin", self.rect.centerx + 5, self.rect.y - 15, 0, -speed))
 
     def _use_bomb(self):
         self.bombs -= 1
         handlers.playscreen.update_sprites("PLAYER_BOMB", "reduce")
         self.god_mode = True
         self.using_bomb = True
-        glob.Groups.enemy_bullets.empty()
-        pygame.time.set_timer(glob.Events.GOD_MODE_END, 3000, 0)
-        pygame.time.set_timer(glob.Events.FLASHING, 100)
-        pygame.time.set_timer(glob.Events.BOMB_RELOAD, 500, 1)
-        pygame.time.set_timer(glob.Events.BOMB_ATTACK, 30)
+        Global.Groups.enemy_bullets.empty()
+        pygame.time.set_timer(Global.Events.GOD_MODE_END, 3000, 0)
+        pygame.time.set_timer(Global.Events.FLASHING, 100)
+        pygame.time.set_timer(Global.Events.BOMB_RELOAD, 500, 1)
+        pygame.time.set_timer(Global.Events.BOMB_ATTACK, 30)
 
     def _handle_movement(self):
         self.hitbox.image.set_alpha(0)
@@ -115,9 +115,9 @@ class Player(pygame.sprite.Sprite):
         self.rect.centery = FRAME_BOTTOM + 40
         self.speedX = 0
         self.speedY = -1
-        pygame.time.set_timer(glob.Events.MOVING_END, 1200, 0)
-        pygame.time.set_timer(glob.Events.GOD_MODE_END, 2000, 0)
-        pygame.time.set_timer(glob.Events.FLASHING, 100)
+        pygame.time.set_timer(Global.Events.MOVING_END, 1200, 0)
+        pygame.time.set_timer(Global.Events.GOD_MODE_END, 2000, 0)
+        pygame.time.set_timer(Global.Events.FLASHING, 100)
 
 
 def _init_bomb(bomb_type):
@@ -130,7 +130,7 @@ def _init_bomb(bomb_type):
             if target is None: raise Exception("Target not found!")
             bomb.angle = (bomb.angle + 8) % 180
             for i in range(6):
-                glob.Groups.player_bullets.add(
+                Global.Groups.player_bullets.add(
                     Bullet("pellet", target.rect.centerx + cos(radians(i * 60 + bomb.angle)) * radius,
                            target.rect.centery + sin(radians(i * 60 + bomb.angle)) * radius,
                            speed * cos(radians(i * 60 + bomb.angle)), speed * sin(radians(i * 60 + bomb.angle))))
@@ -146,7 +146,7 @@ def _init_bomb(bomb_type):
         def attack(caster):
             bomb.angle = (bomb.angle + 6) % 360
             for i in range(18):
-                glob.Groups.player_bullets.add(
+                Global.Groups.player_bullets.add(
                     Bullet("pellet", caster.rect.centerx + cos(radians(i * 20 + bomb.angle)) * radius,
                            caster.rect.centery + sin(radians(i * 20 + bomb.angle)) * radius,
                            speed * cos(radians(i * 20 + bomb.angle)), speed * sin(radians(i * 20 + bomb.angle))))
@@ -163,4 +163,4 @@ class _PlayerHitbox(pygame.sprite.Sprite):
         pygame.draw.circle(self.image, RED, (self.radius, self.radius), self.radius)
         self.rect = pygame.Rect(x, y, self.radius * 2, self.radius * 2)
         self._layer = 3
-        self.add(glob.Groups.all_sprites)
+        self.add(Global.Groups.all_sprites)

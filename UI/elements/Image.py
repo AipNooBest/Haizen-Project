@@ -1,7 +1,7 @@
 import os
 import pygame
 
-from objects import glob
+from objects import Global
 
 
 class Image(pygame.sprite.Sprite):
@@ -23,4 +23,4 @@ class Image(pygame.sprite.Sprite):
         else:
             raise AttributeError("Некорректное значение alignment")
 
-        self.add(glob.Groups.all_sprites)
+        self.add(Global.Groups.all_sprites)

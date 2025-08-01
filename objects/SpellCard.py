@@ -1,7 +1,7 @@
 import pygame
 
 from math import sin, cos, radians
-from objects import glob
+from objects import Global
 from objects.Bullet import Bullet
 
 
@@ -45,12 +45,12 @@ def start(boss, spell):
             card.angle += 0.03
             card.angle %= 360
             for i in range(8):
-                glob.Groups.enemy_bullets.add(
+                Global.Groups.enemy_bullets.add(
                     Bullet("pellet", card.caster_x, card.caster_y,
                            card.speed * cos(radians(sin(card.angle) * 900 + i * 45)),
                            card.speed * sin(radians(sin(card.angle) * 900 + i * 45))))
         card.set_attack(attack)
-        pygame.time.set_timer(glob.Events.ENEMY_RELOAD, 50)
+        pygame.time.set_timer(Global.Events.ENEMY_RELOAD, 50)
 
     if spell == 2:
         card = SpellCard(-9, 0, 120, boss)
@@ -59,16 +59,20 @@ def start(boss, spell):
         def attack():
             card.angle = card.angle + 12 % 360
             for i in range(12):
-                glob.Groups.enemy_bullets.add(
+                Global.Groups.enemy_bullets.add(
                     Bullet("pellet", card.caster_x + cos(radians(i * 30 + card.angle)) * card.radius,
                            card.caster_y + sin(radians(i * 30 + card.angle)) * card.radius,
                            card.speed * cos(radians(i * 30 + 72)), card.speed * sin(radians(i * 30 + 72))))
         card.set_attack(attack)
-        pygame.time.set_timer(glob.Events.ENEMY_RELOAD, 120)
+        pygame.time.set_timer(Global.Events.ENEMY_RELOAD, 120)
 
     if spell == 3:
-        # Заготовка третьей спелл-карты
         pass
+        # card = SpellCard(10, 0, 0, boss)
+        # boss.HP = boss.max_HP = 240
+        #
+        # def attack(target: Player):
+        #     card.angle = pygame.math.Vector2(target.rect.centerx, target.rect.centery)
 
     if spell == 4:
         card = SpellCard(8, 0, 0, boss)
@@ -78,13 +82,13 @@ def start(boss, spell):
             card.angle += 0.03
             card.angle %= 360
             for i in range(6):
-                glob.Groups.enemy_bullets.add(
+                Global.Groups.enemy_bullets.add(
                     Bullet("pellet", card.caster_x, card.caster_y,
                            card.speed * cos(radians(sin(card.angle) * 900 + i * 60)),
                            card.speed * sin(radians(sin(card.angle) * 900 + i * 60))))
 
         card.set_attack(attack)
-        pygame.time.set_timer(glob.Events.ENEMY_RELOAD, 100)
+        pygame.time.set_timer(Global.Events.ENEMY_RELOAD, 100)
 
     if spell == 5:
         card = SpellCard(-9, 0, 120, boss)
@@ -93,13 +97,13 @@ def start(boss, spell):
         def attack():
             card.angle = card.angle + 12 % 360
             for i in range(8):
-                glob.Groups.enemy_bullets.add(
+                Global.Groups.enemy_bullets.add(
                     Bullet("pellet", card.caster_x + cos(radians(i * 40 + card.angle)) * card.radius,
                            card.caster_y + sin(radians(i * 40 + card.angle)) * card.radius,
                            card.speed * cos(radians(i * 40 + 72)), card.speed * sin(radians(i * 40 + 72))))
 
         card.set_attack(attack)
-        pygame.time.set_timer(glob.Events.ENEMY_RELOAD, 200)
+        pygame.time.set_timer(Global.Events.ENEMY_RELOAD, 200)
 
 
 def loop():
@@ -108,5 +112,5 @@ def loop():
 
 def stop():
     global card
-    pygame.time.set_timer(glob.Events.ENEMY_RELOAD, 0)
+    pygame.time.set_timer(Global.Events.ENEMY_RELOAD, 0)
     card = SpellCard(0, 0, 0)
